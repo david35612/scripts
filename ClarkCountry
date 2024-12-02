@@ -6,6 +6,8 @@ local TeleportsButton = Instance.new("TextButton")
 local DealershipButton = Instance.new("TextButton")
 local LockPickButton = Instance.new("TextButton")  -- LockPick2 button
 local TecButton = Instance.new("TextButton")  -- New button for Tec
+local BankButton = Instance.new("TextButton")  -- Bank button
+local MerseaButton = Instance.new("TextButton")  -- New Mersea button
 local CloseButton = Instance.new("TextButton")
 
 -- Parent the GUI
@@ -19,7 +21,7 @@ MainFrame.Name = "MainFrame"
 MainFrame.Parent = ScreenGui
 MainFrame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
 MainFrame.Position = UDim2.new(0.5, -150, 0.5, -100)
-MainFrame.Size = UDim2.new(0, 300, 0, 350)  -- Increased height to fit the new button
+MainFrame.Size = UDim2.new(0, 300, 0, 450)  -- Adjusted height for new button
 MainFrame.BorderSizePixel = 0
 
 Title.Name = "Title"
@@ -71,6 +73,28 @@ TecButton.Text = "Tec"
 TecButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 TecButton.TextSize = 18
 
+-- Bank button
+BankButton.Name = "BankButton"
+BankButton.Parent = MainFrame
+BankButton.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+BankButton.Position = UDim2.new(0.1, 0, 1.2, 0)  -- Adjusted position
+BankButton.Size = UDim2.new(0.8, 0, 0.2, 0)
+BankButton.Font = Enum.Font.SourceSansBold
+BankButton.Text = "Bank"
+BankButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+BankButton.TextSize = 18
+
+-- Mersea button
+MerseaButton.Name = "MerseaButton"
+MerseaButton.Parent = MainFrame
+MerseaButton.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+MerseaButton.Position = UDim2.new(0.1, 0, 1.4, 0)  -- Adjusted position for Mersea button
+MerseaButton.Size = UDim2.new(0.8, 0, 0.2, 0)
+MerseaButton.Font = Enum.Font.SourceSansBold
+MerseaButton.Text = "Mersea"
+MerseaButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+MerseaButton.TextSize = 18
+
 CloseButton.Name = "CloseButton"
 CloseButton.Parent = MainFrame
 CloseButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
@@ -88,34 +112,6 @@ TeleportsButton.MouseButton1Click:Connect(function()
     if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
         player.Character.HumanoidRootPart.CFrame = CFrame.new(-2006, 210, -944)
     end
-
-    -- Destroy the Door
-    local doorPath = workspace:FindFirstChild("Buildings")
-        and workspace.Buildings:FindFirstChild("SteinwegCove")
-        and workspace.Buildings.SteinwegCove:FindFirstChild("SteinwegCoveModel")
-        and workspace.Buildings.SteinwegCove.SteinwegCoveModel:FindFirstChild("SteinwegCoveStoreFillerFive")
-        and workspace.Buildings.SteinwegCove.SteinwegCoveModel.SteinwegCoveStoreFillerFive:FindFirstChild("SteinwegCoveStoreFillerFiveModel")
-        and workspace.Buildings.SteinwegCove.SteinwegCoveModel.SteinwegCoveStoreFillerFive.SteinwegCoveStoreFillerFiveModel:FindFirstChild("SteinwegCoveStoreFillerFiveModel")
-        and workspace.Buildings.SteinwegCove.SteinwegCoveModel.SteinwegCoveStoreFillerFive.SteinwegCoveStoreFillerFiveModel.SteinwegCoveStoreFillerFiveModel:FindFirstChild("Door")
-
-    if doorPath then
-        doorPath:Destroy()
-    else
-        warn("Door not found at the specified path.")
-    end
-
-    -- Remove the blocking part
-    local blockPath = workspace:FindFirstChild("Functions")
-        and workspace.Functions:FindFirstChild("Businesses")
-        and workspace.Functions.Businesses:FindFirstChild("City Used Cars")
-        and workspace.Functions.Businesses["City Used Cars"]:FindFirstChild("Medium Stock")
-        and workspace.Functions.Businesses["City Used Cars"]["Medium Stock"]:FindFirstChild("Part")
-
-    if blockPath then
-        blockPath:Destroy()
-    else
-        warn("Blocking part not found at the specified path.")
-    end
 end)
 
 DealershipButton.MouseButton1Click:Connect(function()
@@ -123,34 +119,6 @@ DealershipButton.MouseButton1Click:Connect(function()
     local player = game.Players.LocalPlayer
     if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
         player.Character.HumanoidRootPart.CFrame = CFrame.new(-1757, 209, -1222)
-    end
-
-    -- Destroy the Door for Dealership
-    local doorPath = workspace:FindFirstChild("Buildings")
-        and workspace.Buildings:FindFirstChild("Bowrey")
-        and workspace.Buildings.Bowrey:FindFirstChild("BowreyModel")
-        and workspace.Buildings.Bowrey.BowreyModel:FindFirstChild("CityUsedCars")
-        and workspace.Buildings.Bowrey.BowreyModel.CityUsedCars:FindFirstChild("CityUsedCarsModel")
-        and workspace.Buildings.Bowrey.BowreyModel.CityUsedCars.CityUsedCarsModel:FindFirstChild("CityUsedCarsModel")
-        and workspace.Buildings.Bowrey.BowreyModel.CityUsedCars.CityUsedCarsModel.CityUsedCarsModel:FindFirstChild("Model")
-
-    if doorPath then
-        doorPath:Destroy()
-    else
-        warn("Door not found at the specified path.")
-    end
-
-    -- Remove the blocking part for Dealership
-    local blockPath = workspace:FindFirstChild("Functions")
-        and workspace.Functions:FindFirstChild("Businesses")
-        and workspace.Functions.Businesses:FindFirstChild("City Used Cars")
-        and workspace.Functions.Businesses["City Used Cars"]:FindFirstChild("Medium Stock")
-        and workspace.Functions.Businesses["City Used Cars"]["Medium Stock"]:FindFirstChild("Part")
-
-    if blockPath then
-        blockPath:Destroy()
-    else
-        warn("Blocking part not found at the specified path.")
     end
 end)
 
@@ -167,6 +135,24 @@ TecButton.MouseButton1Click:Connect(function()
     local player = game.Players.LocalPlayer
     if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
         player.Character.HumanoidRootPart.CFrame = CFrame.new(-1475, 228, -667)
+    end
+end)
+
+-- Bank button functionality
+BankButton.MouseButton1Click:Connect(function()
+    -- Teleport to the Bank position: 1260, 210, -129
+    local player = game.Players.LocalPlayer
+    if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+        player.Character.HumanoidRootPart.CFrame = CFrame.new(1260, 210, -129)
+    end
+end)
+
+-- Mersea button functionality
+MerseaButton.MouseButton1Click:Connect(function()
+    -- Teleport to the Mersea position: 6399, 226, 3154
+    local player = game.Players.LocalPlayer
+    if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+        player.Character.HumanoidRootPart.CFrame = CFrame.new(6399, 226, 3154)
     end
 end)
 
