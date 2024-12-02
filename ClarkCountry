@@ -3,6 +3,8 @@ local ScreenGui = Instance.new("ScreenGui")
 local MainFrame = Instance.new("Frame")
 local Title = Instance.new("TextLabel")
 local TeleportsButton = Instance.new("TextButton")
+local DealershipButton = Instance.new("TextButton")
+local CloseButton = Instance.new("TextButton")
 
 -- Parent the GUI
 ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
@@ -15,7 +17,7 @@ MainFrame.Name = "MainFrame"
 MainFrame.Parent = ScreenGui
 MainFrame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
 MainFrame.Position = UDim2.new(0.5, -150, 0.5, -100)
-MainFrame.Size = UDim2.new(0, 300, 0, 200)
+MainFrame.Size = UDim2.new(0, 300, 0, 250)
 MainFrame.BorderSizePixel = 0
 
 Title.Name = "Title"
@@ -30,12 +32,32 @@ Title.TextSize = 24
 TeleportsButton.Name = "TeleportsButton"
 TeleportsButton.Parent = MainFrame
 TeleportsButton.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
-TeleportsButton.Position = UDim2.new(0.1, 0, 0.4, 0)
+TeleportsButton.Position = UDim2.new(0.1, 0, 0.2, 0)
 TeleportsButton.Size = UDim2.new(0.8, 0, 0.2, 0)
 TeleportsButton.Font = Enum.Font.SourceSansBold
 TeleportsButton.Text = "LaunderMat"
 TeleportsButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 TeleportsButton.TextSize = 18
+
+DealershipButton.Name = "DealershipButton"
+DealershipButton.Parent = MainFrame
+DealershipButton.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+DealershipButton.Position = UDim2.new(0.1, 0, 0.6, 0)
+DealershipButton.Size = UDim2.new(0.8, 0, 0.2, 0)
+DealershipButton.Font = Enum.Font.SourceSansBold
+DealershipButton.Text = "Dealership Main"
+DealershipButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+DealershipButton.TextSize = 18
+
+CloseButton.Name = "CloseButton"
+CloseButton.Parent = MainFrame
+CloseButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+CloseButton.Position = UDim2.new(0.9, 0, 0, 0)
+CloseButton.Size = UDim2.new(0.1, 0, 0.1, 0)
+CloseButton.Font = Enum.Font.SourceSansBold
+CloseButton.Text = "X"
+CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+CloseButton.TextSize = 18
 
 -- Button Functionality
 TeleportsButton.MouseButton1Click:Connect(function()
@@ -59,6 +81,60 @@ TeleportsButton.MouseButton1Click:Connect(function()
     else
         warn("Door not found at the specified path.")
     end
+
+    -- Remove the blocking part
+    local blockPath = workspace:FindFirstChild("Functions")
+        and workspace.Functions:FindFirstChild("Businesses")
+        and workspace.Functions.Businesses:FindFirstChild("City Used Cars")
+        and workspace.Functions.Businesses["City Used Cars"]:FindFirstChild("Medium Stock")
+        and workspace.Functions.Businesses["City Used Cars"]["Medium Stock"]:FindFirstChild("Part")
+
+    if blockPath then
+        blockPath:Destroy()
+    else
+        warn("Blocking part not found at the specified path.")
+    end
+end)
+
+DealershipButton.MouseButton1Click:Connect(function()
+    -- Teleport to the Dealership Main
+    local player = game.Players.LocalPlayer
+    if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+        player.Character.HumanoidRootPart.CFrame = CFrame.new(-1757, 209, -1222)
+    end
+
+    -- Destroy the Door for Dealership
+    local doorPath = workspace:FindFirstChild("Buildings")
+        and workspace.Buildings:FindFirstChild("Bowrey")
+        and workspace.Buildings.Bowrey:FindFirstChild("BowreyModel")
+        and workspace.Buildings.Bowrey.BowreyModel:FindFirstChild("CityUsedCars")
+        and workspace.Buildings.Bowrey.BowreyModel.CityUsedCars:FindFirstChild("CityUsedCarsModel")
+        and workspace.Buildings.Bowrey.BowreyModel.CityUsedCars.CityUsedCarsModel:FindFirstChild("CityUsedCarsModel")
+        and workspace.Buildings.Bowrey.BowreyModel.CityUsedCars.CityUsedCarsModel.CityUsedCarsModel:FindFirstChild("Model")
+
+    if doorPath then
+        doorPath:Destroy()
+    else
+        warn("Door not found at the specified path.")
+    end
+
+    -- Remove the blocking part for Dealership
+    local blockPath = workspace:FindFirstChild("Functions")
+        and workspace.Functions:FindFirstChild("Businesses")
+        and workspace.Functions.Businesses:FindFirstChild("City Used Cars")
+        and workspace.Functions.Businesses["City Used Cars"]:FindFirstChild("Medium Stock")
+        and workspace.Functions.Businesses["City Used Cars"]["Medium Stock"]:FindFirstChild("Part")
+
+    if blockPath then
+        blockPath:Destroy()
+    else
+        warn("Blocking part not found at the specified path.")
+    end
+end)
+
+-- Close Button Functionality
+CloseButton.MouseButton1Click:Connect(function()
+    ScreenGui:Destroy() -- Close the GUI
 end)
 
 -- Draggable GUI (Optional)
