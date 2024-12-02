@@ -4,6 +4,7 @@ local MainFrame = Instance.new("Frame")
 local Title = Instance.new("TextLabel")
 local TeleportsButton = Instance.new("TextButton")
 local DealershipButton = Instance.new("TextButton")
+local LockPickButton = Instance.new("TextButton")  -- New button for LockPick2
 local CloseButton = Instance.new("TextButton")
 
 -- Parent the GUI
@@ -17,7 +18,7 @@ MainFrame.Name = "MainFrame"
 MainFrame.Parent = ScreenGui
 MainFrame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
 MainFrame.Position = UDim2.new(0.5, -150, 0.5, -100)
-MainFrame.Size = UDim2.new(0, 300, 0, 250)
+MainFrame.Size = UDim2.new(0, 300, 0, 300)  -- Increased height to fit the new button
 MainFrame.BorderSizePixel = 0
 
 Title.Name = "Title"
@@ -48,6 +49,16 @@ DealershipButton.Font = Enum.Font.SourceSansBold
 DealershipButton.Text = "Dealership Main"
 DealershipButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 DealershipButton.TextSize = 18
+
+LockPickButton.Name = "LockPickButton"  -- LockPick2 button
+LockPickButton.Parent = MainFrame
+LockPickButton.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+LockPickButton.Position = UDim2.new(0.1, 0, 0.8, 0)  -- Adjusted position for the new button
+LockPickButton.Size = UDim2.new(0.8, 0, 0.2, 0)
+LockPickButton.Font = Enum.Font.SourceSansBold
+LockPickButton.Text = "LockPick2"
+LockPickButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+LockPickButton.TextSize = 18
 
 CloseButton.Name = "CloseButton"
 CloseButton.Parent = MainFrame
@@ -129,6 +140,14 @@ DealershipButton.MouseButton1Click:Connect(function()
         blockPath:Destroy()
     else
         warn("Blocking part not found at the specified path.")
+    end
+end)
+
+LockPickButton.MouseButton1Click:Connect(function()
+    -- Teleport to the LockPick2 location
+    local player = game.Players.LocalPlayer
+    if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+        player.Character.HumanoidRootPart.CFrame = CFrame.new(-2416, 233, -1170)
     end
 end)
 
