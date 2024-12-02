@@ -8,6 +8,7 @@ local LockPickButton = Instance.new("TextButton")  -- LockPick2 button
 local TecButton = Instance.new("TextButton")  -- New button for Tec
 local BankButton = Instance.new("TextButton")  -- Bank button
 local MerseaButton = Instance.new("TextButton")  -- New Mersea button
+local RefreshButton = Instance.new("TextButton")  -- Refresh button
 local CloseButton = Instance.new("TextButton")
 
 -- Parent the GUI
@@ -21,7 +22,7 @@ MainFrame.Name = "MainFrame"
 MainFrame.Parent = ScreenGui
 MainFrame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
 MainFrame.Position = UDim2.new(0.5, -150, 0.5, -100)
-MainFrame.Size = UDim2.new(0, 300, 0, 450)  -- Adjusted height for new button
+MainFrame.Size = UDim2.new(0, 300, 0, 500)  -- Adjusted height for new button
 MainFrame.BorderSizePixel = 0
 
 Title.Name = "Title"
@@ -95,6 +96,17 @@ MerseaButton.Text = "Mersea"
 MerseaButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 MerseaButton.TextSize = 18
 
+-- Refresh button
+RefreshButton.Name = "RefreshButton"
+RefreshButton.Parent = MainFrame
+RefreshButton.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+RefreshButton.Position = UDim2.new(0.1, 0, 1.6, 0)  -- Adjusted position for Refresh button
+RefreshButton.Size = UDim2.new(0.8, 0, 0.2, 0)
+RefreshButton.Font = Enum.Font.SourceSansBold
+RefreshButton.Text = "Refresh"
+RefreshButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+RefreshButton.TextSize = 18
+
 CloseButton.Name = "CloseButton"
 CloseButton.Parent = MainFrame
 CloseButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
@@ -153,6 +165,15 @@ MerseaButton.MouseButton1Click:Connect(function()
     local player = game.Players.LocalPlayer
     if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
         player.Character.HumanoidRootPart.CFrame = CFrame.new(6399, 226, 3154)
+    end
+end)
+
+-- Refresh button functionality
+RefreshButton.MouseButton1Click:Connect(function()
+    -- Teleport to the Refresh position: -347, 210, 2704
+    local player = game.Players.LocalPlayer
+    if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+        player.Character.HumanoidRootPart.CFrame = CFrame.new(-347, 210, 2704)
     end
 end)
 
