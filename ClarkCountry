@@ -1,0 +1,98 @@
+-- Create GUI Hub
+local ScreenGui = Instance.new("ScreenGui")
+local MainFrame = Instance.new("Frame")
+local Title = Instance.new("TextLabel")
+local TeleportsButton = Instance.new("TextButton")
+
+-- Parent the GUI
+ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+-- Properties
+ScreenGui.Name = "TeleportHub"
+ScreenGui.ResetOnSpawn = false
+
+MainFrame.Name = "MainFrame"
+MainFrame.Parent = ScreenGui
+MainFrame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+MainFrame.Position = UDim2.new(0.5, -150, 0.5, -100)
+MainFrame.Size = UDim2.new(0, 300, 0, 200)
+MainFrame.BorderSizePixel = 0
+
+Title.Name = "Title"
+Title.Parent = MainFrame
+Title.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+Title.Size = UDim2.new(1, 0, 0, 50)
+Title.Font = Enum.Font.SourceSansBold
+Title.Text = "Therapy Hub"
+Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+Title.TextSize = 24
+
+TeleportsButton.Name = "TeleportsButton"
+TeleportsButton.Parent = MainFrame
+TeleportsButton.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+TeleportsButton.Position = UDim2.new(0.1, 0, 0.4, 0)
+TeleportsButton.Size = UDim2.new(0.8, 0, 0.2, 0)
+TeleportsButton.Font = Enum.Font.SourceSansBold
+TeleportsButton.Text = "LaunderMat"
+TeleportsButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+TeleportsButton.TextSize = 18
+
+-- Button Functionality
+TeleportsButton.MouseButton1Click:Connect(function()
+    -- Teleport to the LaunderMat
+    local player = game.Players.LocalPlayer
+    if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+        player.Character.HumanoidRootPart.CFrame = CFrame.new(-2006, 210, -944)
+    end
+
+    -- Destroy the Door
+    local doorPath = workspace:FindFirstChild("Buildings")
+        and workspace.Buildings:FindFirstChild("SteinwegCove")
+        and workspace.Buildings.SteinwegCove:FindFirstChild("SteinwegCoveModel")
+        and workspace.Buildings.SteinwegCove.SteinwegCoveModel:FindFirstChild("SteinwegCoveStoreFillerFive")
+        and workspace.Buildings.SteinwegCove.SteinwegCoveModel.SteinwegCoveStoreFillerFive:FindFirstChild("SteinwegCoveStoreFillerFiveModel")
+        and workspace.Buildings.SteinwegCove.SteinwegCoveModel.SteinwegCoveStoreFillerFive.SteinwegCoveStoreFillerFiveModel:FindFirstChild("SteinwegCoveStoreFillerFiveModel")
+        and workspace.Buildings.SteinwegCove.SteinwegCoveModel.SteinwegCoveStoreFillerFive.SteinwegCoveStoreFillerFiveModel.SteinwegCoveStoreFillerFiveModel:FindFirstChild("Door")
+
+    if doorPath then
+        doorPath:Destroy()
+    else
+        warn("Door not found at the specified path.")
+    end
+end)
+
+-- Draggable GUI (Optional)
+local UIS = game:GetService("UserInputService")
+local dragging, dragInput, dragStart, startPos
+
+MainFrame.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        dragging = true
+        dragStart = input.Position
+        startPos = MainFrame.Position
+    end
+end)
+
+MainFrame.InputChanged:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseMovement then
+        dragInput = input
+    end
+end)
+
+UIS.InputChanged:Connect(function(input)
+    if input == dragInput and dragging then
+        local delta = input.Position - dragStart
+        MainFrame.Position = UDim2.new(
+            startPos.X.Scale,
+            startPos.X.Offset + delta.X,
+            startPos.Y.Scale,
+            startPos.Y.Offset + delta.Y
+        )
+    end
+end)
+
+UIS.InputEnded:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        dragging = false
+    end
+end)
