@@ -1,0 +1,96 @@
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local ScreenGui = Instance.new("ScreenGui")
+local WarningFrame = Instance.new("Frame")
+local WarningLabel = Instance.new("TextLabel")
+local Sound = Instance.new("Sound")
+
+-- List of suspicious chat commands
+local suspiciousCommands = {":fly", ":view", ":kick", ":ban", ":noclip", ":tp", ":bring"}
+
+-- Configure ScreenGui
+ScreenGui.Name = "AdminWarning"
+ScreenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
+ScreenGui.ResetOnSpawn = false
+
+-- Configure WarningFrame
+WarningFrame.Name = "WarningFrame"
+WarningFrame.Parent = ScreenGui
+WarningFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+WarningFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+WarningFrame.Size = UDim2.new(0, 400, 0, 200)
+WarningFrame.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+WarningFrame.BorderSizePixel = 0
+WarningFrame.Visible = false
+
+-- Configure WarningLabel
+WarningLabel.Name = "WarningLabel"
+WarningLabel.Parent = WarningFrame
+WarningLabel.Size = UDim2.new(1, 0, 1, 0)
+WarningLabel.BackgroundTransparency = 1
+WarningLabel.Text = "WARNING: ADMIN/MOD SUSPECTED!"
+WarningLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+WarningLabel.Font = Enum.Font.SourceSansBold
+WarningLabel.TextSize = 24
+WarningLabel.TextWrapped = true
+
+-- Configure Sound
+Sound.Name = "WarningSound"
+Sound.Parent = WarningFrame
+Sound.SoundId = "rbxassetid://12222005" -- Replace with a desired sound asset
+Sound.Volume = 1
+Sound.Looped = true
+
+-- Function to warn about suspected admins
+local function warnAdmin(player, reason)
+    WarningFrame.Visible = true
+    WarningLabel.Text = "WARNING: " .. player.Name .. " might be an admin.\nReason: " .. reason
+    Sound:Play()
+    wait(5) -- Keep the warning visible for 5 seconds
+    WarningFrame.Visible = false
+    Sound:Stop()
+end
+
+-- Monitor Chat for Suspicious Commands
+local function onPlayerChat(player)
+    player.Chatted:Connect(function(message)
+        for _, cmd in ipairs(suspiciousCommands) do
+            if string.lower(message):find(string.lower(cmd)) then
+                warnAdmin(player, "Used command: " .. message)
+            end
+        end
+    end)
+end
+
+-- Detect Suspicious Movement (e.g., flying or teleporting)
+local function monitorBehavior(player)
+    if player.Character and player.Character:FindFirstChild("Humanoid") then
+        local humanoid = player.Character.Humanoid
+
+        -- Check for sudden speed or flying behavior
+        humanoid:GetPropertyChangedSignal("WalkSpeed"):Connect(function()
+            if humanoid.WalkSpeed > 50 then -- Adjust this threshold as needed
+                warnAdmin(player, "Unusually high speed detected")
+            end
+        end)
+
+        -- Check for unusual jump height
+        humanoid:GetPropertyChangedSignal("JumpPower"):Connect(function()
+            if humanoid.JumpPower > 100 then -- Adjust this threshold as needed
+                warnAdmin(player, "Unusually high jump detected")
+            end
+        end)
+    end
+end
+
+-- Monitor all players in the game
+for _, player in ipairs(Players:GetPlayers()) do
+    onPlayerChat(player)
+    monitorBehavior(player)
+end
+
+-- Monitor new players joining the game
+Players.PlayerAdded:Connect(function(player)
+    onPlayerChat(player)
+    monitorBehavior(player)
+end)
