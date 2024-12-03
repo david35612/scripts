@@ -3,53 +3,68 @@ local RunService = game:GetService("RunService")
 local LocalPlayer = Players.LocalPlayer
 local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
 
--- Function to clone the player's character
-local function createClone()
-    local clone = Character:Clone()
-    clone.Name = "ChasingClone"
-    clone.Parent = workspace
+-- Function to create the monster
+local function createMonster()
+    -- Create the monster model
+    local monster = Instance.new("Model")
+    monster.Name = "Monster"
+    monster.Parent = workspace
 
-    -- Remove tools and accessories from the clone
-    for _, item in ipairs(clone:GetDescendants()) do
-        if item:IsA("Tool") or item:IsA("Accessory") or item:IsA("Script") then
-            item:Destroy()
-        end
-    end
+    -- Create the monster's body (a simple block)
+    local monsterBody = Instance.new("Part")
+    monsterBody.Name = "Body"
+    monsterBody.Size = Vector3.new(5, 7, 5)
+    monsterBody.Color = Color3.fromRGB(255, 0, 0) -- Red color
+    monsterBody.Anchored = false
+    monsterBody.CanCollide = true
+    monsterBody.Parent = monster
 
-    -- Position the clone above the player
-    local rootPart = clone:FindFirstChild("HumanoidRootPart")
-    if rootPart then
-        rootPart.CFrame = Character.HumanoidRootPart.CFrame * CFrame.new(0, 10, 0)
-        rootPart.Anchored = false
-    end
+    -- Add a humanoid to make it more versatile
+    local humanoid = Instance.new("Humanoid")
+    humanoid.Parent = monster
 
-    -- Add chasing logic
+    -- Position the monster above the player initially
+    local rootPart = Character:WaitForChild("HumanoidRootPart")
+    monsterBody.Position = rootPart.Position + Vector3.new(0, 15, 0)
+
+    -- Weld the monster's humanoid root part
+    local monsterRoot = Instance.new("Part")
+    monsterRoot.Name = "HumanoidRootPart"
+    monsterRoot.Size = Vector3.new(2, 2, 2)
+    monsterRoot.Transparency = 1 -- Invisible root part
+    monsterRoot.CanCollide = false
+    monsterRoot.Parent = monster
+
+    -- Weld monster root to body
+    local weld = Instance.new("WeldConstraint")
+    weld.Part0 = monsterBody
+    weld.Part1 = monsterRoot
+    weld.Parent = monsterBody
+
+    -- Add a chasing mechanism
     RunService.Heartbeat:Connect(function()
-        if rootPart and Character:FindFirstChild("HumanoidRootPart") then
-            local target = Character.HumanoidRootPart.Position
-            local direction = (target - rootPart.Position).Unit
-            rootPart.Velocity = direction * 500 -- Speed of chase
+        if Character:FindFirstChild("HumanoidRootPart") then
+            local playerPos = Character.HumanoidRootPart.Position
+            local monsterPos = monsterBody.Position
+            local direction = (playerPos - monsterPos).Unit
+            monsterBody.Velocity = direction * 100 -- Adjust the chasing speed here
         end
     end)
 
-    -- Reset the player if the clone touches them
-    rootPart.Touched:Connect(function(hit)
+    -- Reset the player if the monster touches them
+    monsterBody.Touched:Connect(function(hit)
         if hit.Parent == Character then
-            Character:BreakJoints() -- Reset player
+            Character:BreakJoints() -- Reset the player
         end
     end)
 
-    -- Auto-destroy the clone after 15 seconds
-    task.delay(15, function()
-        if clone and clone.Parent then
-            clone:Destroy()
+    -- Automatically destroy the monster after 30 seconds
+    task.delay(30, function()
+        if monster and monster.Parent then
+            monster:Destroy()
         end
     end)
 end
 
--- Spawn 50 clones
-for i = 1, 50 do
-    task.delay(i * 0.1, function() -- Stagger creation slightly to reduce lag
-        createClone()
-    end)
-end
+-- Spawn the monster
+createMonster()
