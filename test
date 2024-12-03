@@ -1,70 +1,29 @@
-local Players = game:GetService("Players")
-local RunService = game:GetService("RunService")
-local LocalPlayer = Players.LocalPlayer
-local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+-- List of audio IDs (replace with any valid Roblox sound IDs)
+local soundIDs = {
+    "rbxassetid://1845244245", -- Example sound 1 (Roar)
+    "rbxassetid://220153632", -- Example sound 2 (Background music)
+    "rbxassetid://1171245002", -- Example sound 3 (Explosion)
+    "rbxassetid://224687199", -- Example sound 4 (Ambient sound)
+    "rbxassetid://5094703474" -- Example sound 5 (Chime)
+}
 
--- Function to create the monster
-local function createMonster()
-    -- Create the monster model
-    local monster = Instance.new("Model")
-    monster.Name = "Monster"
-    monster.Parent = workspace
+-- Function to play random sound with enhanced volume
+local function playRandomSound()
+    -- Create a Sound object
+    local sound = Instance.new("Sound")
+    sound.SoundId = soundIDs[math.random(1, #soundIDs)] -- Pick a random sound from the list
+    sound.Volume = 3000 -- Set volume to 3000% (or 30x normal volume)
+    sound.Parent = workspace -- Attach the sound to the workspace so it can be heard
+    sound:Play() -- Play the sound
 
-    -- Create the monster's body (a simple block)
-    local monsterBody = Instance.new("Part")
-    monsterBody.Name = "Body"
-    monsterBody.Size = Vector3.new(5, 7, 5)
-    monsterBody.Color = Color3.fromRGB(255, 0, 0) -- Red color
-    monsterBody.Anchored = false
-    monsterBody.CanCollide = true
-    monsterBody.Parent = monster
-
-    -- Add a humanoid to make it more versatile
-    local humanoid = Instance.new("Humanoid")
-    humanoid.Parent = monster
-
-    -- Position the monster above the player initially
-    local rootPart = Character:WaitForChild("HumanoidRootPart")
-    monsterBody.Position = rootPart.Position + Vector3.new(0, 15, 0)
-
-    -- Weld the monster's humanoid root part
-    local monsterRoot = Instance.new("Part")
-    monsterRoot.Name = "HumanoidRootPart"
-    monsterRoot.Size = Vector3.new(2, 2, 2)
-    monsterRoot.Transparency = 1 -- Invisible root part
-    monsterRoot.CanCollide = false
-    monsterRoot.Parent = monster
-
-    -- Weld monster root to body
-    local weld = Instance.new("WeldConstraint")
-    weld.Part0 = monsterBody
-    weld.Part1 = monsterRoot
-    weld.Parent = monsterBody
-
-    -- Add a chasing mechanism
-    RunService.Heartbeat:Connect(function()
-        if Character:FindFirstChild("HumanoidRootPart") then
-            local playerPos = Character.HumanoidRootPart.Position
-            local monsterPos = monsterBody.Position
-            local direction = (playerPos - monsterPos).Unit
-            monsterBody.Velocity = direction * 100 -- Adjust the chasing speed here
-        end
-    end)
-
-    -- Reset the player if the monster touches them
-    monsterBody.Touched:Connect(function(hit)
-        if hit.Parent == Character then
-            Character:BreakJoints() -- Reset the player
-        end
-    end)
-
-    -- Automatically destroy the monster after 30 seconds
-    task.delay(30, function()
-        if monster and monster.Parent then
-            monster:Destroy()
-        end
+    -- After the sound finishes, remove it to prevent clutter
+    sound.Ended:Connect(function()
+        sound:Destroy() -- Clean up the sound after it ends
     end)
 end
 
--- Spawn the monster
-createMonster()
+-- Loop the sound playing every 5 seconds with a random sound
+while true do
+    playRandomSound() -- Play a random sound
+    wait(5) -- Wait for 5 seconds before playing the next sound
+end
