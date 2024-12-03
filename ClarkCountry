@@ -14,7 +14,7 @@ local buttons = {
     {Name = "MerseaButton", Text = "Mersea", Position = CFrame.new(6399, 226, 3154)},
     {Name = "RefreshButton", Text = "Refresh", Position = CFrame.new(-347, 210, 2704)},
     {Name = "KuzButton", Text = "Kuz", Position = CFrame.new(819, 197, 2826)},
-    {Name = "Free80KcashButton", Text = "Free80Kcash", Position = CFrame.new(0, 0, 0)}, -- Free80Kcash button
+    {Name = "Free50KcashButton", Text = "Free50Kcash", Position = CFrame.new(0, 0, 0)}, -- Free50Kcash button
 }
 
 -- Parent the GUI
@@ -82,8 +82,8 @@ for i, buttonInfo in ipairs(buttons) do
     -- Button Functionality
     button.MouseButton1Click:Connect(function()
         local player = game.Players.LocalPlayer
-        if buttonInfo.Name == "Free80KcashButton" then
-            -- Free80Kcash teleport functionality
+        if buttonInfo.Name == "Free50KcashButton" then
+            -- Free50Kcash teleport functionality
             local positions = {
                 CFrame.new(-1324, 423, -1940),
                 CFrame.new(-941, 220, -1186),
@@ -92,17 +92,39 @@ for i, buttonInfo in ipairs(buttons) do
                 CFrame.new(724, 244, -668),
                 CFrame.new(1620, 217, -1739),
                 CFrame.new(2301, 204, -1068),
-                CFrame.new(3246, 220, -1426),
                 CFrame.new(1566, 217, 575),
                 CFrame.new(7030, 669, -479),
                 CFrame.new(6654, 498, 830),
                 CFrame.new(6754, 519, 685),
                 CFrame.new(6944, 493, 903),
-                CFrame.new(7323, 507, 1147)
+                CFrame.new(7323, 507, 1147),
+                CFrame.new(6667, 231, 2902),
+                CFrame.new(6543, 295, 3681),
+                CFrame.new(6535, 251, 2946),
+                CFrame.new(6864, 287, 2583),
+                CFrame.new(6285, 209, 3222),
+                CFrame.new(6913, 239, 3152),
+                CFrame.new(6535, 242, 2580),
+                CFrame.new(3246, 220, -1427),
+                CFrame.new(9691, 261, 470),
+                CFrame.new(9977, 261, 749),
+                CFrame.new(10135, 236, 1278),
+                CFrame.new(9204, 236, 292),
+                CFrame.new(3987, 340, 5383),
+                CFrame.new(-1857, 380, -1002),
+                CFrame.new(-2021, 191, 137),
+                CFrame.new(61, 264, 2706),
+                CFrame.new(-657, 237, 2813),
+                CFrame.new(-94, 242, 2331),
+                CFrame.new(866, 190, 3215),
+                CFrame.new(847, 253, 2497),
+                CFrame.new(1309, 216, 3341),
+                CFrame.new(2679, 260, 2535),
+                CFrame.new(5739, 593, -557),
             }
             for _, position in ipairs(positions) do
                 -- Teleport the player to each position
-                wait(1) -- Delay between teleports
+                wait(2) -- Delay of 2 seconds between teleports
                 if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
                     player.Character.HumanoidRootPart.CFrame = position
                 end
