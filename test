@@ -1,66 +1,55 @@
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
 
--- NPC parameters
-local NPCModelTemplate = Instance.new("Model")
-local NPCPart = Instance.new("Part")
-local Humanoid = Instance.new("Humanoid")
+-- Function to clone the player's character
+local function createClone()
+    local clone = Character:Clone()
+    clone.Name = "ChasingClone"
+    clone.Parent = workspace
 
--- Create NPC Template
-NPCModelTemplate.Name = "ChasingNPC"
-NPCPart.Name = "HumanoidRootPart"
-NPCPart.Size = Vector3.new(2, 5, 2)
-NPCPart.Anchored = false
-NPCPart.CanCollide = false
-NPCPart.Material = Enum.Material.Neon
-NPCPart.BrickColor = BrickColor.new("Bright blue")
-NPCPart.Parent = NPCModelTemplate
-
-Humanoid.Name = "Humanoid"
-Humanoid.Parent = NPCModelTemplate
-
--- Function to spawn NPC
-local function spawnNPC()
-    local npc = NPCModelTemplate:Clone()
-    npc.Parent = workspace
-
-    -- Spawn NPC above the player
-    local rootPart = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
-    if rootPart then
-        npc:SetPrimaryPartCFrame(rootPart.CFrame * CFrame.new(0, 10, 0)) -- Spawn 10 studs above
+    -- Remove tools and accessories from the clone
+    for _, item in ipairs(clone:GetDescendants()) do
+        if item:IsA("Tool") or item:IsA("Accessory") or item:IsA("Script") then
+            item:Destroy()
+        end
     end
 
-    -- NPC movement logic
-    local speed = 500
+    -- Position the clone above the player
+    local rootPart = clone:FindFirstChild("HumanoidRootPart")
+    if rootPart then
+        rootPart.CFrame = Character.HumanoidRootPart.CFrame * CFrame.new(0, 10, 0)
+        rootPart.Anchored = false
+    end
+
+    -- Add chasing logic
     RunService.Heartbeat:Connect(function()
-        if npc.Parent and rootPart then
-            local npcRoot = npc:FindFirstChild("HumanoidRootPart")
-            if npcRoot then
-                local direction = (rootPart.Position - npcRoot.Position).Unit
-                npcRoot.Velocity = direction * speed
-            end
+        if rootPart and Character:FindFirstChild("HumanoidRootPart") then
+            local target = Character.HumanoidRootPart.Position
+            local direction = (target - rootPart.Position).Unit
+            rootPart.Velocity = direction * 500 -- Speed of chase
         end
     end)
 
-    -- Detect touch with player
-    npc.HumanoidRootPart.Touched:Connect(function(hit)
-        if hit.Parent == LocalPlayer.Character then
-            LocalPlayer.Character:BreakJoints() -- Reset player if touched
+    -- Reset the player if the clone touches them
+    rootPart.Touched:Connect(function(hit)
+        if hit.Parent == Character then
+            Character:BreakJoints() -- Reset player
         end
     end)
 
-    -- Auto-destroy NPC after some time to prevent clutter
+    -- Auto-destroy the clone after 15 seconds
     task.delay(15, function()
-        if npc.Parent then
-            npc:Destroy()
+        if clone and clone.Parent then
+            clone:Destroy()
         end
     end)
 end
 
--- Spawn NPCs in a loop
-for i = 1, 999 do
-    task.delay(i * 0.1, function() -- Stagger spawning to prevent lag
-        spawnNPC()
+-- Spawn 50 clones
+for i = 1, 50 do
+    task.delay(i * 0.1, function() -- Stagger creation slightly to reduce lag
+        createClone()
     end)
 end
