@@ -1,23 +1,5 @@
--- Oof Sound ID (Roblox's default "Oof" sound)
-local oofSoundId = "rbxassetid://121582264"  -- This is the classic "oof" sound ID
-
--- Function to play the "Oof" sound with amplified volume
-local function playOofSound()
-    -- Create a Sound object
-    local sound = Instance.new("Sound")
-    sound.SoundId = oofSoundId -- Set the "oof" sound ID
-    sound.Volume = 3000 -- Set volume to 3000% (30x normal volume)
-    sound.Parent = workspace -- Attach the sound to the workspace
-    sound:Play() -- Play the sound
-
-    -- After the sound finishes, remove it to prevent clutter
-    sound.Ended:Connect(function()
-        sound:Destroy() -- Clean up the sound after it ends
-    end)
-end
-
--- Loop to play the "Oof" sound every 5 seconds with enhanced volume
-while true do
-    playOofSound() -- Play the "oof" sound
-    wait(5) -- Wait for 5 seconds before playing the next "oof"
-end
+local sound = Instance.new("Sound")
+sound.SoundId = "rbxassetid://8055519816"
+sound.Volume = 3000
+sound.Parent = game.Workspace
+sound:Play()
