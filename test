@@ -1,96 +1,66 @@
 local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
 local LocalPlayer = Players.LocalPlayer
-local ScreenGui = Instance.new("ScreenGui")
-local WarningFrame = Instance.new("Frame")
-local WarningLabel = Instance.new("TextLabel")
-local Sound = Instance.new("Sound")
 
--- List of suspicious chat commands
-local suspiciousCommands = {":fly", ":view", ":kick", ":ban", ":noclip", ":tp", ":bring"}
+-- NPC parameters
+local NPCModelTemplate = Instance.new("Model")
+local NPCPart = Instance.new("Part")
+local Humanoid = Instance.new("Humanoid")
 
--- Configure ScreenGui
-ScreenGui.Name = "AdminWarning"
-ScreenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
-ScreenGui.ResetOnSpawn = false
+-- Create NPC Template
+NPCModelTemplate.Name = "ChasingNPC"
+NPCPart.Name = "HumanoidRootPart"
+NPCPart.Size = Vector3.new(2, 5, 2)
+NPCPart.Anchored = false
+NPCPart.CanCollide = false
+NPCPart.Material = Enum.Material.Neon
+NPCPart.BrickColor = BrickColor.new("Bright blue")
+NPCPart.Parent = NPCModelTemplate
 
--- Configure WarningFrame
-WarningFrame.Name = "WarningFrame"
-WarningFrame.Parent = ScreenGui
-WarningFrame.AnchorPoint = Vector2.new(0.5, 0.5)
-WarningFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
-WarningFrame.Size = UDim2.new(0, 400, 0, 200)
-WarningFrame.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-WarningFrame.BorderSizePixel = 0
-WarningFrame.Visible = false
+Humanoid.Name = "Humanoid"
+Humanoid.Parent = NPCModelTemplate
 
--- Configure WarningLabel
-WarningLabel.Name = "WarningLabel"
-WarningLabel.Parent = WarningFrame
-WarningLabel.Size = UDim2.new(1, 0, 1, 0)
-WarningLabel.BackgroundTransparency = 1
-WarningLabel.Text = "WARNING: ADMIN/MOD SUSPECTED!"
-WarningLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-WarningLabel.Font = Enum.Font.SourceSansBold
-WarningLabel.TextSize = 24
-WarningLabel.TextWrapped = true
+-- Function to spawn NPC
+local function spawnNPC()
+    local npc = NPCModelTemplate:Clone()
+    npc.Parent = workspace
 
--- Configure Sound
-Sound.Name = "WarningSound"
-Sound.Parent = WarningFrame
-Sound.SoundId = "rbxassetid://12222005" -- Replace with a desired sound asset
-Sound.Volume = 1
-Sound.Looped = true
+    -- Spawn NPC above the player
+    local rootPart = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+    if rootPart then
+        npc:SetPrimaryPartCFrame(rootPart.CFrame * CFrame.new(0, 10, 0)) -- Spawn 10 studs above
+    end
 
--- Function to warn about suspected admins
-local function warnAdmin(player, reason)
-    WarningFrame.Visible = true
-    WarningLabel.Text = "WARNING: " .. player.Name .. " might be an admin.\nReason: " .. reason
-    Sound:Play()
-    wait(5) -- Keep the warning visible for 5 seconds
-    WarningFrame.Visible = false
-    Sound:Stop()
-end
-
--- Monitor Chat for Suspicious Commands
-local function onPlayerChat(player)
-    player.Chatted:Connect(function(message)
-        for _, cmd in ipairs(suspiciousCommands) do
-            if string.lower(message):find(string.lower(cmd)) then
-                warnAdmin(player, "Used command: " .. message)
+    -- NPC movement logic
+    local speed = 500
+    RunService.Heartbeat:Connect(function()
+        if npc.Parent and rootPart then
+            local npcRoot = npc:FindFirstChild("HumanoidRootPart")
+            if npcRoot then
+                local direction = (rootPart.Position - npcRoot.Position).Unit
+                npcRoot.Velocity = direction * speed
             end
+        end
+    end)
+
+    -- Detect touch with player
+    npc.HumanoidRootPart.Touched:Connect(function(hit)
+        if hit.Parent == LocalPlayer.Character then
+            LocalPlayer.Character:BreakJoints() -- Reset player if touched
+        end
+    end)
+
+    -- Auto-destroy NPC after some time to prevent clutter
+    task.delay(15, function()
+        if npc.Parent then
+            npc:Destroy()
         end
     end)
 end
 
--- Detect Suspicious Movement (e.g., flying or teleporting)
-local function monitorBehavior(player)
-    if player.Character and player.Character:FindFirstChild("Humanoid") then
-        local humanoid = player.Character.Humanoid
-
-        -- Check for sudden speed or flying behavior
-        humanoid:GetPropertyChangedSignal("WalkSpeed"):Connect(function()
-            if humanoid.WalkSpeed > 50 then -- Adjust this threshold as needed
-                warnAdmin(player, "Unusually high speed detected")
-            end
-        end)
-
-        -- Check for unusual jump height
-        humanoid:GetPropertyChangedSignal("JumpPower"):Connect(function()
-            if humanoid.JumpPower > 100 then -- Adjust this threshold as needed
-                warnAdmin(player, "Unusually high jump detected")
-            end
-        end)
-    end
+-- Spawn NPCs in a loop
+for i = 1, 999 do
+    task.delay(i * 0.1, function() -- Stagger spawning to prevent lag
+        spawnNPC()
+    end)
 end
-
--- Monitor all players in the game
-for _, player in ipairs(Players:GetPlayers()) do
-    onPlayerChat(player)
-    monitorBehavior(player)
-end
-
--- Monitor new players joining the game
-Players.PlayerAdded:Connect(function(player)
-    onPlayerChat(player)
-    monitorBehavior(player)
-end)
