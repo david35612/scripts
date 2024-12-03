@@ -6,13 +6,14 @@ local CloseButton = Instance.new("TextButton")
 
 -- Buttons list
 local buttons = {
-    {Name = "TeleportsButton", Text = "LaunderMat", Position = CFrame.new(-2006, 210, -944)},
-    {Name = "DealershipButton", Text = "Dealership Main", Position = CFrame.new(-1757, 209, -1222)},
+    {Name = "TeleportsButton", Text = "LaunderMat", Position = CFrame.new(-1981, 210, -945)}, -- Updated position
+    {Name = "DealershipButton", Text = "Dealership Main", Position = CFrame.new(-1782, 210, -1241)}, -- Updated position
     {Name = "LockPickButton", Text = "LockPick2", Position = CFrame.new(-2416, 233, -1170)},
     {Name = "TecButton", Text = "Tec", Position = CFrame.new(-1475, 228, -667)},
     {Name = "BankButton", Text = "Bank", Position = CFrame.new(1260, 210, -129)},
     {Name = "MerseaButton", Text = "Mersea", Position = CFrame.new(6399, 226, 3154)},
     {Name = "RefreshButton", Text = "Refresh", Position = CFrame.new(-347, 210, 2704)},
+    {Name = "KuzButton", Text = "Kuz", Position = CFrame.new(819, 197, 2826)}, -- Kuz button
 }
 
 -- Parent the GUI
