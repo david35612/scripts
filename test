@@ -1,19 +1,13 @@
--- List of audio IDs (replace with any valid Roblox sound IDs)
-local soundIDs = {
-    "rbxassetid://1845244245", -- Example sound 1 (Roar)
-    "rbxassetid://220153632", -- Example sound 2 (Background music)
-    "rbxassetid://1171245002", -- Example sound 3 (Explosion)
-    "rbxassetid://224687199", -- Example sound 4 (Ambient sound)
-    "rbxassetid://5094703474" -- Example sound 5 (Chime)
-}
+-- Oof Sound ID (Roblox's default "Oof" sound)
+local oofSoundId = "rbxassetid://121582264"  -- This is the classic "oof" sound ID
 
--- Function to play random sound with enhanced volume
-local function playRandomSound()
+-- Function to play the "Oof" sound with amplified volume
+local function playOofSound()
     -- Create a Sound object
     local sound = Instance.new("Sound")
-    sound.SoundId = soundIDs[math.random(1, #soundIDs)] -- Pick a random sound from the list
-    sound.Volume = 3000 -- Set volume to 3000% (or 30x normal volume)
-    sound.Parent = workspace -- Attach the sound to the workspace so it can be heard
+    sound.SoundId = oofSoundId -- Set the "oof" sound ID
+    sound.Volume = 3000 -- Set volume to 3000% (30x normal volume)
+    sound.Parent = workspace -- Attach the sound to the workspace
     sound:Play() -- Play the sound
 
     -- After the sound finishes, remove it to prevent clutter
@@ -22,8 +16,8 @@ local function playRandomSound()
     end)
 end
 
--- Loop the sound playing every 5 seconds with a random sound
+-- Loop to play the "Oof" sound every 5 seconds with enhanced volume
 while true do
-    playRandomSound() -- Play a random sound
-    wait(5) -- Wait for 5 seconds before playing the next sound
+    playOofSound() -- Play the "oof" sound
+    wait(5) -- Wait for 5 seconds before playing the next "oof"
 end
