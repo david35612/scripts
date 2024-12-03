@@ -2,187 +2,91 @@
 local ScreenGui = Instance.new("ScreenGui")
 local MainFrame = Instance.new("Frame")
 local Title = Instance.new("TextLabel")
-local TeleportsButton = Instance.new("TextButton")
-local DealershipButton = Instance.new("TextButton")
-local LockPickButton = Instance.new("TextButton")  -- LockPick2 button
-local TecButton = Instance.new("TextButton")  -- New button for Tec
-local BankButton = Instance.new("TextButton")  -- Bank button
-local MerseaButton = Instance.new("TextButton")  -- New Mersea button
-local RefreshButton = Instance.new("TextButton")  -- Refresh button
 local CloseButton = Instance.new("TextButton")
+
+-- Buttons list
+local buttons = {
+    {Name = "TeleportsButton", Text = "LaunderMat", Position = CFrame.new(-2006, 210, -944)},
+    {Name = "DealershipButton", Text = "Dealership Main", Position = CFrame.new(-1757, 209, -1222)},
+    {Name = "LockPickButton", Text = "LockPick2", Position = CFrame.new(-2416, 233, -1170)},
+    {Name = "TecButton", Text = "Tec", Position = CFrame.new(-1475, 228, -667)},
+    {Name = "BankButton", Text = "Bank", Position = CFrame.new(1260, 210, -129)},
+    {Name = "MerseaButton", Text = "Mersea", Position = CFrame.new(6399, 226, 3154)},
+    {Name = "RefreshButton", Text = "Refresh", Position = CFrame.new(-347, 210, 2704)},
+}
 
 -- Parent the GUI
 ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
-
--- Properties
 ScreenGui.Name = "TeleportHub"
 ScreenGui.ResetOnSpawn = false
 
+-- MainFrame
 MainFrame.Name = "MainFrame"
 MainFrame.Parent = ScreenGui
-MainFrame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-MainFrame.Position = UDim2.new(0.5, -150, 0.5, -100)
-MainFrame.Size = UDim2.new(0, 300, 0, 500)  -- Adjusted height for new button
+MainFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+MainFrame.Position = UDim2.new(0.5, -125, 0.5, -150)
+MainFrame.Size = UDim2.new(0, 250, 0, 300) -- Compact size
 MainFrame.BorderSizePixel = 0
+MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
 
+-- Title
 Title.Name = "Title"
 Title.Parent = MainFrame
-Title.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-Title.Size = UDim2.new(1, 0, 0, 50)
+Title.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+Title.Size = UDim2.new(1, 0, 0, 40)
 Title.Font = Enum.Font.SourceSansBold
 Title.Text = "Therapy Hub"
 Title.TextColor3 = Color3.fromRGB(255, 255, 255)
-Title.TextSize = 24
+Title.TextSize = 20
+Title.BorderSizePixel = 0
 
-TeleportsButton.Name = "TeleportsButton"
-TeleportsButton.Parent = MainFrame
-TeleportsButton.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
-TeleportsButton.Position = UDim2.new(0.1, 0, 0.2, 0)
-TeleportsButton.Size = UDim2.new(0.8, 0, 0.2, 0)
-TeleportsButton.Font = Enum.Font.SourceSansBold
-TeleportsButton.Text = "LaunderMat"
-TeleportsButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-TeleportsButton.TextSize = 18
-
-DealershipButton.Name = "DealershipButton"
-DealershipButton.Parent = MainFrame
-DealershipButton.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
-DealershipButton.Position = UDim2.new(0.1, 0, 0.6, 0)
-DealershipButton.Size = UDim2.new(0.8, 0, 0.2, 0)
-DealershipButton.Font = Enum.Font.SourceSansBold
-DealershipButton.Text = "Dealership Main"
-DealershipButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-DealershipButton.TextSize = 18
-
-LockPickButton.Name = "LockPickButton"  -- LockPick2 button
-LockPickButton.Parent = MainFrame
-LockPickButton.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
-LockPickButton.Position = UDim2.new(0.1, 0, 0.8, 0)  -- Adjusted position for the new button
-LockPickButton.Size = UDim2.new(0.8, 0, 0.2, 0)
-LockPickButton.Font = Enum.Font.SourceSansBold
-LockPickButton.Text = "LockPick2"
-LockPickButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-LockPickButton.TextSize = 18
-
-TecButton.Name = "TecButton"  -- Tec button
-TecButton.Parent = MainFrame
-TecButton.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
-TecButton.Position = UDim2.new(0.1, 0, 1.0, 0)  -- Adjusted position for the new button
-TecButton.Size = UDim2.new(0.8, 0, 0.2, 0)
-TecButton.Font = Enum.Font.SourceSansBold
-TecButton.Text = "Tec"
-TecButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-TecButton.TextSize = 18
-
--- Bank button
-BankButton.Name = "BankButton"
-BankButton.Parent = MainFrame
-BankButton.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
-BankButton.Position = UDim2.new(0.1, 0, 1.2, 0)  -- Adjusted position
-BankButton.Size = UDim2.new(0.8, 0, 0.2, 0)
-BankButton.Font = Enum.Font.SourceSansBold
-BankButton.Text = "Bank"
-BankButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-BankButton.TextSize = 18
-
--- Mersea button
-MerseaButton.Name = "MerseaButton"
-MerseaButton.Parent = MainFrame
-MerseaButton.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
-MerseaButton.Position = UDim2.new(0.1, 0, 1.4, 0)  -- Adjusted position for Mersea button
-MerseaButton.Size = UDim2.new(0.8, 0, 0.2, 0)
-MerseaButton.Font = Enum.Font.SourceSansBold
-MerseaButton.Text = "Mersea"
-MerseaButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-MerseaButton.TextSize = 18
-
--- Refresh button
-RefreshButton.Name = "RefreshButton"
-RefreshButton.Parent = MainFrame
-RefreshButton.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
-RefreshButton.Position = UDim2.new(0.1, 0, 1.6, 0)  -- Adjusted position for Refresh button
-RefreshButton.Size = UDim2.new(0.8, 0, 0.2, 0)
-RefreshButton.Font = Enum.Font.SourceSansBold
-RefreshButton.Text = "Refresh"
-RefreshButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-RefreshButton.TextSize = 18
-
+-- Close Button
 CloseButton.Name = "CloseButton"
 CloseButton.Parent = MainFrame
 CloseButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-CloseButton.Position = UDim2.new(0.9, 0, 0, 0)
-CloseButton.Size = UDim2.new(0.1, 0, 0.1, 0)
+CloseButton.Position = UDim2.new(0.9, 0, 0, 5)
+CloseButton.Size = UDim2.new(0, 20, 0, 20)
 CloseButton.Font = Enum.Font.SourceSansBold
 CloseButton.Text = "X"
 CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-CloseButton.TextSize = 18
-
--- Button Functionality
-TeleportsButton.MouseButton1Click:Connect(function()
-    -- Teleport to the LaunderMat
-    local player = game.Players.LocalPlayer
-    if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-        player.Character.HumanoidRootPart.CFrame = CFrame.new(-2006, 210, -944)
-    end
-end)
-
-DealershipButton.MouseButton1Click:Connect(function()
-    -- Teleport to the Dealership Main
-    local player = game.Players.LocalPlayer
-    if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-        player.Character.HumanoidRootPart.CFrame = CFrame.new(-1757, 209, -1222)
-    end
-end)
-
-LockPickButton.MouseButton1Click:Connect(function()
-    -- Teleport to the LockPick2 location
-    local player = game.Players.LocalPlayer
-    if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-        player.Character.HumanoidRootPart.CFrame = CFrame.new(-2416, 233, -1170)
-    end
-end)
-
-TecButton.MouseButton1Click:Connect(function()
-    -- Teleport to the Tec location
-    local player = game.Players.LocalPlayer
-    if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-        player.Character.HumanoidRootPart.CFrame = CFrame.new(-1475, 228, -667)
-    end
-end)
-
--- Bank button functionality
-BankButton.MouseButton1Click:Connect(function()
-    -- Teleport to the Bank position: 1260, 210, -129
-    local player = game.Players.LocalPlayer
-    if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-        player.Character.HumanoidRootPart.CFrame = CFrame.new(1260, 210, -129)
-    end
-end)
-
--- Mersea button functionality
-MerseaButton.MouseButton1Click:Connect(function()
-    -- Teleport to the Mersea position: 6399, 226, 3154
-    local player = game.Players.LocalPlayer
-    if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-        player.Character.HumanoidRootPart.CFrame = CFrame.new(6399, 226, 3154)
-    end
-end)
-
--- Refresh button functionality
-RefreshButton.MouseButton1Click:Connect(function()
-    -- Teleport to the Refresh position: -347, 210, 2704
-    local player = game.Players.LocalPlayer
-    if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-        player.Character.HumanoidRootPart.CFrame = CFrame.new(-347, 210, 2704)
-    end
-end)
-
--- Close Button Functionality
+CloseButton.TextSize = 14
+CloseButton.BorderSizePixel = 0
 CloseButton.MouseButton1Click:Connect(function()
     ScreenGui:Destroy() -- Close the GUI
 end)
 
--- Draggable GUI (Optional)
+-- Create Buttons Dynamically
+for i, buttonInfo in ipairs(buttons) do
+    local button = Instance.new("TextButton")
+    button.Name = buttonInfo.Name
+    button.Parent = MainFrame
+    button.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+    button.Size = UDim2.new(0.9, 0, 0, 30)
+    button.Position = UDim2.new(0.05, 0, 0, 50 + (i - 1) * 35)
+    button.Font = Enum.Font.SourceSansBold
+    button.Text = buttonInfo.Text
+    button.TextColor3 = Color3.fromRGB(255, 255, 255)
+    button.TextSize = 16
+    button.BorderSizePixel = 0
+
+    -- Button Hover Effect
+    button.MouseEnter:Connect(function()
+        button.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+    end)
+    button.MouseLeave:Connect(function()
+        button.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+    end)
+
+    -- Button Functionality
+    button.MouseButton1Click:Connect(function()
+        local player = game.Players.LocalPlayer
+        if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+            player.Character.HumanoidRootPart.CFrame = buttonInfo.Position
+        end
+    end)
+end
+
+-- Draggable GUI
 local UIS = game:GetService("UserInputService")
 local dragging, dragInput, dragStart, startPos
 
