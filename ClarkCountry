@@ -3,6 +3,7 @@ local ScreenGui = Instance.new("ScreenGui")
 local MainFrame = Instance.new("Frame")
 local Title = Instance.new("TextLabel")
 local CloseButton = Instance.new("TextButton")
+local Footer = Instance.new("TextLabel") -- Footer for "Made By Lko"
 
 -- Buttons list
 local buttons = {
@@ -14,20 +15,20 @@ local buttons = {
     {Name = "MerseaButton", Text = "Mersea", Position = CFrame.new(6399, 226, 3154)},
     {Name = "RefreshButton", Text = "Refresh", Position = CFrame.new(-347, 210, 2704)},
     {Name = "KuzButton", Text = "Kuz", Position = CFrame.new(819, 197, 2826)},
-    {Name = "Free50KcashButton", Text = "Free50Kcash", Position = CFrame.new(0, 0, 0)}, -- Free50Kcash button
+    {Name = "Free50KcashButton", Text = "Free50Kcash", Position = CFrame.new(0, 0, 0)}, -- Placeholder Position
 }
 
 -- Parent the GUI
 ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
-ScreenGui.Name = "TeleportHub"
+ScreenGui.Name = "DivocHub"
 ScreenGui.ResetOnSpawn = false
 
 -- MainFrame
 MainFrame.Name = "MainFrame"
 MainFrame.Parent = ScreenGui
 MainFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-MainFrame.Position = UDim2.new(0.5, -125, 0.5, -150)
-MainFrame.Size = UDim2.new(0, 250, 0, 350) -- Increased size to fit more buttons
+MainFrame.Position = UDim2.new(0.5, -125, 0.5, -175)
+MainFrame.Size = UDim2.new(0, 250, 0, 420) -- Adjusted height to fit footer
 MainFrame.BorderSizePixel = 0
 MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
 
@@ -37,7 +38,7 @@ Title.Parent = MainFrame
 Title.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 Title.Size = UDim2.new(1, 0, 0, 40)
 Title.Font = Enum.Font.SourceSansBold
-Title.Text = "Therapy Hub"
+Title.Text = "DivocHub"
 Title.TextColor3 = Color3.fromRGB(255, 255, 255)
 Title.TextSize = 20
 Title.BorderSizePixel = 0
@@ -137,6 +138,18 @@ for i, buttonInfo in ipairs(buttons) do
         end
     end)
 end
+
+-- Footer
+Footer.Name = "Footer"
+Footer.Parent = MainFrame
+Footer.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+Footer.Size = UDim2.new(1, 0, 0, 30)
+Footer.Position = UDim2.new(0, 0, 1, -30)
+Footer.Font = Enum.Font.SourceSansBold
+Footer.Text = "Made By Lko"
+Footer.TextColor3 = Color3.fromRGB(255, 255, 255)
+Footer.TextSize = 16
+Footer.BorderSizePixel = 0
 
 -- Draggable GUI
 local UIS = game:GetService("UserInputService")
