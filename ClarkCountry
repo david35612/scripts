@@ -124,11 +124,15 @@ for i, buttonInfo in ipairs(buttons) do
                 CFrame.new(5739, 593, -557),
                 CFrame.new(-2426, 233, 1652),
             }
+
+            -- Iterate over the teleport locations
             for _, position in ipairs(positions) do
-                -- Teleport the player to each position
-                wait(2) -- Delay of 2 seconds between teleports
-                if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-                    player.Character.HumanoidRootPart.CFrame = position
+                for _ = 1, 2 do -- Teleport to the location twice
+                    -- Ensure that the player has a humanoid root part and teleport them
+                    if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                        player.Character.HumanoidRootPart.CFrame = position
+                        wait(2) -- Wait 2 seconds between each teleport
+                    end
                 end
             end
         else
