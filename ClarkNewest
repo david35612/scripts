@@ -11,7 +11,7 @@ local buttons = {
     {Name = "DealershipButton", Text = "Dealership Main", Position = CFrame.new(-1782, 210, -1241)},
     {Name = "LockPickButton", Text = "LockPick2", Position = CFrame.new(-2416, 233, -1170)},
     {Name = "TecButton", Text = "Tec", Position = CFrame.new(-1475, 228, -667)},
-    {Name = "BankButton", Text = "Bank", Position = CFrame.new(1260, 210, -129)},
+    {Name = "MosinButton", Text = "Mosin", Position = CFrame.new(-16, 209, 2863)},
     {Name = "MerseaButton", Text = "Mersea", Position = CFrame.new(6399, 226, 3154)},
     {Name = "RefreshButton", Text = "Refresh", Position = CFrame.new(-329, 210, 2721)},
     {Name = "KuzButton", Text = "Kuz", Position = CFrame.new(819, 197, 2826)},
