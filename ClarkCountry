@@ -114,14 +114,15 @@ for i, buttonInfo in ipairs(buttons) do
                 CFrame.new(3987, 340, 5383),
                 CFrame.new(-1857, 380, -1002),
                 CFrame.new(-2021, 191, 137),
-                CFrame.new(61, 264, 2706),
+                CFrame.new(62, 264, 2705),
                 CFrame.new(-657, 237, 2813),
-                CFrame.new(-94, 242, 2331),
-                CFrame.new(866, 190, 3215),
+                CFrame.new(-93, 241, 2330),
+                CFrame.new(865, 190, 3214),
                 CFrame.new(847, 253, 2497),
                 CFrame.new(1309, 216, 3341),
-                CFrame.new(2679, 260, 2535),
+                CFrame.new(2679, 261, 2536),
                 CFrame.new(5739, 593, -557),
+                CFrame.new(-2426, 233, 1652),
             }
             for _, position in ipairs(positions) do
                 -- Teleport the player to each position
