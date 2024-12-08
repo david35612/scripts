@@ -1,0 +1,172 @@
+local fov = 30
+local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
+local Players = game:GetService("Players")
+local Cam = workspace.CurrentCamera
+
+-- Create the FOV ring
+local FOVring = Drawing.new("Circle")
+FOVring.Visible = true
+FOVring.Thickness = 2
+FOVring.Color = Color3.fromRGB(128, 0, 128)
+FOVring.Filled = false
+FOVring.Radius = fov
+FOVring.Position = Cam.ViewportSize / 2
+
+local isAiming = false
+local isEnabled = true -- Control the aiming feature on/off
+
+-- Create GUI for toggling on/off
+local screenGui = Instance.new("ScreenGui")
+local frame = Instance.new("Frame")
+local toggleButton = Instance.new("TextButton")
+local statusLabel = Instance.new("TextLabel")
+
+-- GUI setup
+screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+screenGui.Name = "AimingControlGui"
+screenGui.ResetOnSpawn = false
+
+frame.Parent = screenGui
+frame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+frame.Size = UDim2.new(0, 150, 0, 60)
+frame.Position = UDim2.new(0.5, -75, 0.5, -30)
+frame.AnchorPoint = Vector2.new(0.5, 0.5)
+
+toggleButton.Parent = frame
+toggleButton.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+toggleButton.Size = UDim2.new(0, 140, 0, 30)
+toggleButton.Position = UDim2.new(0, 5, 0, 5)
+toggleButton.Font = Enum.Font.SourceSansBold
+toggleButton.Text = "Toggle Aiming: ON"
+toggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+toggleButton.TextSize = 16
+toggleButton.BorderSizePixel = 0
+
+statusLabel.Parent = frame
+statusLabel.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+statusLabel.Size = UDim2.new(0, 140, 0, 20)
+statusLabel.Position = UDim2.new(0, 5, 0, 40)
+statusLabel.Font = Enum.Font.SourceSansBold
+statusLabel.Text = "Aiming: ON"
+statusLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+statusLabel.TextSize = 12
+statusLabel.BorderSizePixel = 0
+
+-- Draggable frame
+local dragging, dragInput, dragStart, startPos
+frame.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        dragging = true
+        dragStart = input.Position
+        startPos = frame.Position
+    end
+end)
+
+frame.InputChanged:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseMovement then
+        dragInput = input
+    end
+end)
+
+UserInputService.InputChanged:Connect(function(input)
+    if input == dragInput and dragging then
+        local delta = input.Position - dragStart
+        frame.Position = UDim2.new(
+            startPos.X.Scale,
+            startPos.X.Offset + delta.X,
+            startPos.Y.Scale,
+            startPos.Y.Offset + delta.Y
+        )
+    end
+end)
+
+UserInputService.InputEnded:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        dragging = false
+    end
+end)
+
+-- Toggle button functionality
+toggleButton.MouseButton1Click:Connect(function()
+    isEnabled = not isEnabled
+    if isEnabled then
+        toggleButton.Text = "Toggle Aiming: ON"
+        statusLabel.Text = "Aiming: ON"
+        FOVring.Visible = true  -- Make FOV ring visible when aimbot is on
+    else
+        toggleButton.Text = "Toggle Aiming: OFF"
+        statusLabel.Text = "Aiming: OFF"
+        FOVring.Visible = false  -- Hide FOV ring when aimbot is off
+    end
+end)
+
+local function updateDrawings()
+    FOVring.Position = Cam.ViewportSize / 2
+end
+
+local function onMouseButtonPress(input, gameProcessed)
+    if gameProcessed then return end
+    if input.UserInputType == Enum.UserInputType.MouseButton2 then
+        isAiming = true
+    end
+end
+
+local function onMouseButtonRelease(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton2 then
+        isAiming = false
+    end
+end
+
+UserInputService.InputBegan:Connect(onMouseButtonPress)
+UserInputService.InputEnded:Connect(onMouseButtonRelease)
+
+local function lookAt(target)
+    local lookVector = (target - Cam.CFrame.Position).unit
+    local newCFrame = CFrame.new(Cam.CFrame.Position, Cam.CFrame.Position + lookVector)
+    Cam.CFrame = newCFrame
+end
+
+local function getClosestPlayerInFOV(targetPartName)
+    local nearest = nil
+    local last = math.huge
+    local playerMousePos = Cam.ViewportSize / 2
+
+    for _, player in ipairs(Players:GetPlayers()) do
+        if player ~= Players.LocalPlayer then
+            local character = player.Character
+            if character then
+                local targetPart = character:FindFirstChild(targetPartName)
+                local humanoid = character:FindFirstChild("Humanoid")
+                if targetPart and humanoid and humanoid.Health > 0 then
+                    local ePos, isVisible = Cam:WorldToViewportPoint(targetPart.Position)
+                    local distance = (Vector2.new(ePos.X, ePos.Y) - playerMousePos).Magnitude
+
+                    if distance < last and distance < fov and isVisible then
+                        last = distance
+                        nearest = player
+                    end
+                end
+            end
+        end
+    end
+
+    return nearest
+end
+
+local lastUpdateTime = tick()
+
+RunService.RenderStepped:Connect(function()
+    updateDrawings()
+
+    if isEnabled and isAiming then
+        local closest = getClosestPlayerInFOV("Head")
+        if closest and closest.Character and closest.Character:FindFirstChild("Head") then
+            local targetPos = closest.Character.Head.Position
+            local currentCFrame = Cam.CFrame
+            local targetCFrame = CFrame.new(currentCFrame.Position, targetPos)
+            
+            Cam.CFrame = targetCFrame
+        end
+    end
+end)
