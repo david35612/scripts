@@ -6,83 +6,102 @@ local Title = Instance.new("TextLabel")
 local PackCookButton = Instance.new("TextButton")
 local BarrelButton = Instance.new("TextButton")
 local BagsButton = Instance.new("TextButton")
+local MadeByLabel = Instance.new("TextLabel")
+local SellButton = Instance.new("TextButton")  -- Changed to "Sell"
+local UICorner = Instance.new("UICorner")
+local UIStroke = Instance.new("UIStroke")
 
 -- Configure GUI components
-ScreenGui.Name = "TeleportHub"
+ScreenGui.Name = "DivocHub2"
 ScreenGui.Parent = game.CoreGui
 
 Frame.Name = "MainFrame"
 Frame.Parent = ScreenGui
-Frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-Frame.Size = UDim2.new(0, 300, 0, 250)
-Frame.Position = UDim2.new(0.5, -150, 0.5, -125)
+Frame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+Frame.Size = UDim2.new(0, 260, 0, 300) -- Compact size
+Frame.Position = UDim2.new(0.5, -130, 0.5, -150)
 Frame.Active = true
 Frame.Draggable = true
+
+-- Add rounded corners and border stroke to the frame
+UICorner.Parent = Frame
+UICorner.CornerRadius = UDim.new(0, 8)
+
+UIStroke.Parent = Frame
+UIStroke.Color = Color3.fromRGB(100, 100, 100)
+UIStroke.Thickness = 2
 
 CloseButton.Name = "CloseButton"
 CloseButton.Parent = Frame
 CloseButton.Text = "X"
-CloseButton.Size = UDim2.new(0, 30, 0, 30)
-CloseButton.Position = UDim2.new(1, -35, 0, 5)
-CloseButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+CloseButton.Size = UDim2.new(0, 24, 0, 24)
+CloseButton.Position = UDim2.new(1, -30, 0, 6)
+CloseButton.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
 CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 CloseButton.Font = Enum.Font.SourceSansBold
-CloseButton.TextSize = 16
+CloseButton.TextSize = 14
+
+-- Add rounded corners to the CloseButton
+local CloseButtonCorner = Instance.new("UICorner", CloseButton)
+CloseButtonCorner.CornerRadius = UDim.new(0, 6)
+
 CloseButton.MouseButton1Click:Connect(function()
     ScreenGui:Destroy()
 end)
 
 Title.Name = "Title"
 Title.Parent = Frame
-Title.Text = "Teleport Hub"
+Title.Text = "DivocHub2"
 Title.Size = UDim2.new(1, -40, 0, 30)
-Title.Position = UDim2.new(0, 5, 0, 5)
+Title.Position = UDim2.new(0, 10, 0, 6)
 Title.BackgroundTransparency = 1
 Title.TextColor3 = Color3.fromRGB(255, 255, 255)
 Title.Font = Enum.Font.SourceSansBold
 Title.TextSize = 20
 Title.TextXAlignment = Enum.TextXAlignment.Left
 
-PackCookButton.Name = "PackCookButton"
-PackCookButton.Parent = Frame
-PackCookButton.Text = "Pack/Cook"
-PackCookButton.Size = UDim2.new(0, 200, 0, 50)
-PackCookButton.Position = UDim2.new(0.5, -100, 0.5, -100)
-PackCookButton.BackgroundColor3 = Color3.fromRGB(50, 150, 250)
-PackCookButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-PackCookButton.Font = Enum.Font.SourceSansBold
-PackCookButton.TextSize = 18
+local function createButton(parent, text, position)
+    local button = Instance.new("TextButton")
+    button.Parent = parent
+    button.Text = text
+    button.Size = UDim2.new(0, 200, 0, 36) -- Smaller button size
+    button.Position = position
+    button.BackgroundColor3 = Color3.fromRGB(50, 150, 250)
+    button.TextColor3 = Color3.fromRGB(255, 255, 255)
+    button.Font = Enum.Font.SourceSansBold
+    button.TextSize = 16
 
-BarrelButton.Name = "BarrelButton"
-BarrelButton.Parent = Frame
-BarrelButton.Text = "Barrel"
-BarrelButton.Size = UDim2.new(0, 200, 0, 50)
-BarrelButton.Position = UDim2.new(0.5, -100, 0.5, -40)
-BarrelButton.BackgroundColor3 = Color3.fromRGB(50, 150, 250)
-BarrelButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-BarrelButton.Font = Enum.Font.SourceSansBold
-BarrelButton.TextSize = 18
+    -- Add rounded corners to the button
+    local buttonCorner = Instance.new("UICorner", button)
+    buttonCorner.CornerRadius = UDim.new(0, 8)
+    return button
+end
 
-BagsButton.Name = "BagsButton"
-BagsButton.Parent = Frame
-BagsButton.Text = "Bags"
-BagsButton.Size = UDim2.new(0, 200, 0, 50)
-BagsButton.Position = UDim2.new(0.5, -100, 0.5, 20)
-BagsButton.BackgroundColor3 = Color3.fromRGB(50, 150, 250)
-BagsButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-BagsButton.Font = Enum.Font.SourceSansBold
-BagsButton.TextSize = 18
+-- Adjusted button positions to be further down
+PackCookButton = createButton(Frame, "Pack/Cook", UDim2.new(0.5, -100, 0.3, -30))  -- moved from -80 to -30
+BarrelButton = createButton(Frame, "Barrel", UDim2.new(0.5, -100, 0.3, 20))      -- moved from -30 to 20
+BagsButton = createButton(Frame, "Bags", UDim2.new(0.5, -100, 0.3, 70))          -- moved from 20 to 70
+SellButton = createButton(Frame, "Sell", UDim2.new(0.5, -100, 0.3, 120))         -- changed to "Sell" and moved from 70 to 120
+
+-- Add "Made By Lko" label at the bottom
+MadeByLabel.Name = "MadeByLabel"
+MadeByLabel.Parent = Frame
+MadeByLabel.Text = "Made By Lko"
+MadeByLabel.Size = UDim2.new(1, 0, 0, 20)
+MadeByLabel.Position = UDim2.new(0, 0, 1, -25)
+MadeByLabel.BackgroundTransparency = 1
+MadeByLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+MadeByLabel.Font = Enum.Font.SourceSansItalic
+MadeByLabel.TextSize = 12
+MadeByLabel.TextXAlignment = Enum.TextXAlignment.Center
 
 -- Teleport functions
 local function teleportActions()
     local player = game.Players.LocalPlayer
     if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-        -- Teleport player
         player.Character.HumanoidRootPart.CFrame = CFrame.new(10279, 133, 1024)
         wait(1)
         player.Character.HumanoidRootPart.CFrame = CFrame.new(10279, 133, 1026)
-
-        -- Move parts simultaneously
         for i = 1, 2 do
             workspace.Interactions["1809"]["1809"].CFrame = CFrame.new(10279, 133, 1026)
             workspace.Interactions["1806"]["1806"].CFrame = CFrame.new(10268, 133, 1026)
@@ -96,12 +115,9 @@ end
 local function barrelActions()
     local player = game.Players.LocalPlayer
     if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-        -- Teleport player
         player.Character.HumanoidRootPart.CFrame = CFrame.new(6261, 227, 2903)
         wait(1)
         player.Character.HumanoidRootPart.CFrame = CFrame.new(6261, 227, 2903)
-
-        -- Move part multiple times
         for i = 1, 2 do
             workspace.Interactions["253"]["253"].CFrame = CFrame.new(6261, 227, 2905)
             wait(2)
@@ -114,15 +130,81 @@ end
 local function bagsActions()
     local player = game.Players.LocalPlayer
     if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-        -- Teleport player
-        player.Character.HumanoidRootPart.CFrame = CFrame.new(6396, 214, 2926)
+        player.Character.HumanoidRootPart.CFrame = CFrame.new(6414, 221, 2925)
         wait(1)
-        player.Character.HumanoidRootPart.CFrame = CFrame.new(6396, 214, 2926)
-
-        -- Move part multiple times
+        player.Character.HumanoidRootPart.CFrame = CFrame.new(6414, 221, 2925)
         for i = 1, 2 do
-            workspace.Interactions["270"]["270"].CFrame = CFrame.new(6396, 214, 2926)
+            workspace.Interactions["270"]["270"].CFrame = CFrame.new(6414, 221, 2925)
             wait(2)
+        end
+    else
+        warn("Player or HumanoidRootPart not found")
+    end
+end
+
+local function sellActions()  -- Changed to "sellActions"
+    local player = game.Players.LocalPlayer
+    if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+        -- Move the player slightly downward before the final destination
+        local startPosition = player.Character.HumanoidRootPart.Position
+        local downPosition = startPosition - Vector3.new(0, 5, 0)  -- Move down by 5 studs
+        player.Character.HumanoidRootPart.CFrame = CFrame.new(downPosition)
+        
+        -- Wait for a short period before teleporting to the final destination
+        wait(0.5)
+        
+        -- Final destination (updated)
+        local endPosition = Vector3.new(1368, 210, 157)
+        local currentPosition = downPosition
+
+        -- Create a platform at the starting position
+        local platform = Instance.new("Part")
+        platform.Size = Vector3.new(5, 1, 5)
+        platform.Anchored = true
+        platform.CanCollide = true
+        platform.Material = Enum.Material.ForceField
+        platform.BrickColor = BrickColor.new("Bright green")
+        platform.Parent = workspace
+
+        -- Enable noclip
+        player.Character.HumanoidRootPart.CanCollide = false
+        for _, part in pairs(player.Character:GetChildren()) do
+            if part:IsA("BasePart") then
+                part.CanCollide = false
+            end
+        end
+
+        -- Initial moveStep values (100% of the original speed)
+        local moveStep = 20.0  -- Original speed
+
+        -- Move towards the final destination
+        while (currentPosition - endPosition).Magnitude > 5 do
+            local distanceToEnd = (currentPosition - endPosition).Magnitude
+            
+            -- If we're more than 50 studs from the destination, move with normal speed
+            if distanceToEnd > 50 then
+                currentPosition = currentPosition + (endPosition - currentPosition).unit * moveStep
+            -- If we're within 50 studs of the destination, slow down to 60% speed
+            else
+                currentPosition = currentPosition + (endPosition - currentPosition).unit * (moveStep * 0.6)  -- Slow down near destination
+            end
+
+            -- Update position and platform location
+            player.Character.HumanoidRootPart.CFrame = CFrame.new(currentPosition)
+            platform.Position = currentPosition - Vector3.new(0, 3, 0)
+            wait(0.1)
+        end
+
+        -- Final position and remove the platform
+        player.Character.HumanoidRootPart.CFrame = CFrame.new(endPosition)
+        platform:Destroy()
+
+        -- Reset collision for character
+        player.Character.HumanoidRootPart.CanCollide = true
+        for _, part in pairs(player.Character:GetChildren()) do
+            if part:IsA("BasePart") then
+                part.CanCollide = true
+            end
         end
     else
         warn("Player or HumanoidRootPart not found")
@@ -133,3 +215,4 @@ end
 PackCookButton.MouseButton1Click:Connect(teleportActions)
 BarrelButton.MouseButton1Click:Connect(barrelActions)
 BagsButton.MouseButton1Click:Connect(bagsActions)
+SellButton.MouseButton1Click:Connect(sellActions)  -- Connect to the new "Sell" function
