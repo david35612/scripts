@@ -142,22 +142,13 @@ local function bagsActions()
     end
 end
 
-local function sellActions()  -- Changed to "sellActions"
+local function sellActions()
     local player = game.Players.LocalPlayer
     if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-        -- Move the player slightly downward before the final destination
-        local startPosition = player.Character.HumanoidRootPart.Position
-        local downPosition = startPosition - Vector3.new(0, 5, 0)  -- Move down by 5 studs
-        player.Character.HumanoidRootPart.CFrame = CFrame.new(downPosition)
-        
-        -- Wait for a short period before teleporting to the final destination
-        wait(0.5)
-        
-        -- Final destination (updated)
+        -- Final destination
         local endPosition = Vector3.new(1368, 210, 157)
-        local currentPosition = downPosition
 
-        -- Create a platform at the starting position
+        -- Create a floating platform
         local platform = Instance.new("Part")
         platform.Size = Vector3.new(5, 1, 5)
         platform.Anchored = true
@@ -166,15 +157,8 @@ local function sellActions()  -- Changed to "sellActions"
         platform.BrickColor = BrickColor.new("Bright green")
         platform.Parent = workspace
 
-        -- Enable noclip
-        player.Character.HumanoidRootPart.CanCollide = false
-        for _, part in pairs(player.Character:GetChildren()) do
-            if part:IsA("BasePart") then
-                part.CanCollide = false
-            end
-        end
-
         -- Initial moveStep values (100% of the original speed)
+        local currentPosition = player.Character.HumanoidRootPart.Position
         local moveStep = 20.0  -- Original speed
 
         -- Move towards the final destination
@@ -195,15 +179,19 @@ local function sellActions()  -- Changed to "sellActions"
             wait(0.1)
         end
 
-        -- Final position and remove the platform
+        -- Final position
         player.Character.HumanoidRootPart.CFrame = CFrame.new(endPosition)
         platform:Destroy()
 
-        -- Reset collision for character
-        player.Character.HumanoidRootPart.CanCollide = true
-        for _, part in pairs(player.Character:GetChildren()) do
-            if part:IsA("BasePart") then
-                part.CanCollide = true
+        -- Teleport workspace.Interactions["679"]["679"] five times
+        for i = 1, 5 do
+            local targetPart = workspace.Interactions:FindFirstChild("679")
+            if targetPart and targetPart:FindFirstChild("679") then
+                targetPart["679"].CFrame = CFrame.new(endPosition)
+                wait(2) -- Wait 2 seconds between each teleport
+            else
+                warn("Target part not found")
+                break
             end
         end
     else
@@ -215,4 +203,4 @@ end
 PackCookButton.MouseButton1Click:Connect(teleportActions)
 BarrelButton.MouseButton1Click:Connect(barrelActions)
 BagsButton.MouseButton1Click:Connect(bagsActions)
-SellButton.MouseButton1Click:Connect(sellActions)  -- Connect to the new "Sell" function
+SellButton.MouseButton1Click:Connect(sellActions)
