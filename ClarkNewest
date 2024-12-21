@@ -115,7 +115,7 @@ for i, buttonInfo in ipairs(buttons) do
                 CFrame.new(3987, 340, 5383),
                 CFrame.new(-1857, 380, -1002),
                 CFrame.new(-2021, 191, 137),
-                CFrame.new(62, 264, 2705),
+                CFrame.new(57, 258, 2719),
                 CFrame.new(-657, 237, 2813),
                 CFrame.new(-93, 241, 2330),
                 CFrame.new(865, 190, 3214),
